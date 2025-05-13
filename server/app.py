@@ -16,6 +16,11 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 
 dbInstance.check_connection()
 
+@app.route("/api/updatemod" , methods=["POST"])
+def updatemod():
+   
+   return Controller.UpdateMod(request)
+
 @app.route("/api/getmods" , methods=["POST"])
 def get_mods():
   

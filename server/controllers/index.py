@@ -3,6 +3,29 @@ from models.models import Mods
 from models.models import dbInstance
 session = dbInstance.DbSession()
 
+
+def UpdateMod(request):
+
+    try: 
+      data = request.get_json()
+
+      if not data["id"]:
+            return jsonify(error="An error occured!") ,400
+      
+      mod = session.query(Mods).filter_by(id=data["id"]).first()
+      mod.moddesc = data["moddesc"]
+      mod.modname = data["modname"]
+      mod.modimage = data["modimage"]
+      mod.modgametype = data["modgametype"]
+      mod.modurl = data["modurl"]
+      session.commit()
+      session.close()
+
+      return jsonify(message="Mod updated"), 200
+    except Exception as e:
+          print(e)
+          session.rollback()
+          return jsonify(error="Internal server error!") , 500
 def get_all_mods(requets):
     try: 
         result=[]

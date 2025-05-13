@@ -95,7 +95,7 @@ export default function Dashboard() {
                         {SelectedMod !== null ? (UpdateState ?
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <UpdateMod SetSelectedMod={setSelectedMod} SelectedData={SelectedMod} setUpdateState={setUpdateState} />
+                                <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod}/>
 
                             </div>
                             :

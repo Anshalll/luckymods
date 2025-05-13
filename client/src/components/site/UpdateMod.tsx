@@ -3,42 +3,49 @@ import React, { useState } from 'react'
 
 interface Mod_data {
 
-        id: number,
-        modname: string,
-        modurl: string,
-        modimage: string,
-        moddesc: string,
-        rating: number,
-        modgametype: string,
-        created_at: string,
+    id: number,
+    modname: string,
+    modurl: string,
+    modimage: string,
+    moddesc: string,
+    rating: number,
+    modgametype: string,
+    created_at: string,
 
 }
 
 
-export default function UpdateMod({ SetSelectedMod, SelectedData, setUpdateState }: { setUpdateState: React.Dispatch<boolean>, SelectedData: Mod_data, SetSelectedMod: React.Dispatch<Mod_data> }) {
+export default function UpdateMod({setSelectedMod ,  setGameMods ,  SelectedData, setUpdateState }: { setUpdateState: React.Dispatch<boolean>, SelectedData: Mod_data  , setGameMods: React.Dispatch<Array<Mod_data> > ,  setSelectedMod: React.Dispatch<Mod_data>}) {
 
     const [Name, setName] = useState<string>(SelectedData.modname)
     const [URL, setURL] = useState<string>(SelectedData.modurl)
     const [Desc, setDesc] = useState<string>(SelectedData.moddesc)
-    const [Image, setImage] = useState<string >(SelectedData.modimage)
+    const [Image, setImage] = useState<string>(SelectedData.modimage)
     const [Game, setGame] = useState<string>(SelectedData.modgametype)
 
     const HandleChange = () => {
-        SetSelectedMod({created_at: SelectedData.created_at , id: SelectedData.id , rating: SelectedData.rating,  moddesc: Desc, modname: Name, modurl: URL, modgametype: Game, modimage: Image })
-        setUpdateState(false)
+     
+        const data = { created_at: SelectedData.created_at, id: SelectedData.id, rating: SelectedData.rating, moddesc: Desc, modname: Name, modurl: URL, modgametype: Game, modimage: Image }
+        
+
+        fetch(`${import.meta.env.VITE_APP_SERVER_URL}/api/updatemod` , {
+            method: "POST",
+            headers: {  
+                "Content-Type": "application/json",
+                
+            },
+            body: JSON.stringify(data)
+        }).then((e) => e.json()).then((e) => {
+            console.log(e)
+            setGameMods([])
+            setSelectedMod(data)
+            setUpdateState(false)
+        }).catch((e) => console.error(e))
+
     }
 
 
-    const HandleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            setImage(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-    };
 
 
     return (
@@ -51,10 +58,12 @@ export default function UpdateMod({ SetSelectedMod, SelectedData, setUpdateState
 
                 <label htmlFor="modname" className='w-[400px] ibm-mono text-cyan-500'>Name</label>
                 <input onChange={(e) => setName(e.target.value)} id='modname' className="w-[400px] ibm-mono p-[5px]" value={Name} />
-                <div className='relative w-[400px] h-[150px]'>
-                    <input onChange={(e) => HandleImage(e)} type="file" className='absolute w-full h-full opacity-0' />
-                    <img src={Image} className="w-full h-full object-cover rounded-lg" alt="" />
-                </div>
+
+
+                <img src={Image} className="w-[400px] h-[150px] object-cover rounded-lg" alt="" />
+
+                <label className='w-[400px] ibm-mono text-cyan-500' htmlFor="imageurl">Image URL</label>
+                <input onChange={(e) => setImage(e.target.value)} id='imageurl' className="w-[400px] ibm-mono p-[5px]" value={Image} />
 
                 <label htmlFor="modname" className='w-[400px] ibm-mono text-cyan-500'>Game</label>
 
