@@ -16,6 +16,10 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 
 dbInstance.check_connection()
 
+@app.route('/')
+def home():
+    return "Hello from Lambda!"
+
 @app.route("/api/updatemod" , methods=["POST"])
 def updatemod():
    
@@ -45,5 +49,6 @@ def get_newmods():
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbInstance.DbSession().remove()  # removes the current session for this request
+if __name__ == "__main__":
 
-app.run(port=os.getenv("PORT"), debug=True , host="0.0.0.0")
+   app.run()

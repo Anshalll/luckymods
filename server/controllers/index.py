@@ -4,6 +4,7 @@ from models.models import dbInstance
 session = dbInstance.DbSession()
 
 
+
 def UpdateMod(request):
 
     try: 
@@ -26,6 +27,7 @@ def UpdateMod(request):
           print(e)
           session.rollback()
           return jsonify(error="Internal server error!") , 500
+    
 def get_all_mods(requets):
     try: 
         result=[]
