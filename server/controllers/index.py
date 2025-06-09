@@ -166,3 +166,9 @@ def InsertMods(request):
     except Exception as e:
         print(e)
         return jsonify(error="Internal server error!"),500
+
+def loginuser(request):
+      data = request.get_json()
+      if data:
+            user_email = data["useremail"]
+            password = data["password"]

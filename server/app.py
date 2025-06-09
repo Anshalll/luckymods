@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request , jsonify
 from dotenv import load_dotenv
 import os
 from database.connection import dbInstance 
@@ -45,6 +45,13 @@ def get_popularmods():
 @app.route("/api/get_new_mods" , methods=["GET"])
 def get_newmods():
    return Controller.get_newly_added_mods()
+@app.route("/api/login" , methods=["POST"])
+def login():
+
+   if "username" not in session:
+      return jsonify(logged=False) , 500
+   else:
+      pass
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

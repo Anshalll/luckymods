@@ -30,7 +30,7 @@ export default function SelectedMod({ vals, setSelectedModid }: { vals: Vals, se
   return (
 
 
-    <div className="w-[90%] md:w-[400px] items-center     mt-[20px] justify-center flex flex-col gap-[20px] sm:p-[0px] ">
+    <div className="w-[90%] md:w-[400px] items-center mt-[20px] justify-center flex flex-col gap-[20px] sm:p-[0px] ">
 
       <div className="w-full flex items-center justify-between">
 
