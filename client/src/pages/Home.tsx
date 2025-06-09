@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Cards from "@/components/site/Cards"
 import { useEffect, useState } from "react"
 import SelectedMod from "../components/site/SelectedMod"
-import { X } from 'lucide-react'
 import Loading from "@/components/site/Loading"
 
 export default function Home() {
@@ -70,10 +69,6 @@ export default function Home() {
   }, [NewSlitherMods, NewMinecraftMods, PopularMinecraftMods, PopularSlitherMods])
 
 
-  const CloseSelectedMod = () => {
-
-    setSelectedModid({ id: null, game: "", type: "" })
-  }
 
   return (
     <Layout>
@@ -96,15 +91,11 @@ export default function Home() {
             }
             if (selectedData) {
 
-              return <div className="flex flex-col gap-[20px] w-full h-full items-center justify-center "><div>
-
-                <div className="w-full relative h-full">
-                  <button className="absolute right-0 rounded-full w-[30px] h-[30px] border border-white flex items-center justify-center" onClick={() => CloseSelectedMod()}><X /></button>
-                  <SelectedMod vals={selectedData} />
-                </div>
+              return <div className="flex flex-col gap-[20px] w-full h-full items-center justify-center ">
+                <SelectedMod vals={selectedData} setSelectedModid={setSelectedModid}/>
               </div>
 
-              </div>
+            
 
             }
 
@@ -126,7 +117,7 @@ export default function Home() {
                 </TabsList>
                 <TabsContent value="New" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center ">
                   {NewSlitherMods?.map((value, index) => (
-                    <button onClick={() => setSelectedModid({ type: "new", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full md:w-[350px] ">
+                    <button onClick={() => setSelectedModid({ type: "new", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] md:w-[350px] ">
 
                       <Cards value={value} />
                     </button>
@@ -136,7 +127,7 @@ export default function Home() {
                 </TabsContent>
                 <TabsContent value="Popular" className="flex gap-[20px] w-full lg:flex-row flex-col items-center">
                   {PopularSlitherMods.map((value, index) => (
-                    <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
+                    <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
                       <Cards value={value} />
                     </button>
@@ -161,7 +152,7 @@ export default function Home() {
                 </TabsList>
                 <TabsContent value="New" className="flex w-full flex-col lg:flex-row gap-[20px] items-center">
                   {NewMinecraftMods.map((value, index) => (
-                    <button onClick={() => setSelectedModid({ type: "new", game: "minecraft", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
+                    <button onClick={() => setSelectedModid({ type: "new", game: "minecraft", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
                       <Cards value={value} />
                     </button>
@@ -171,7 +162,7 @@ export default function Home() {
                 </TabsContent>
                 <TabsContent value="Popular" className="flex w-full flex-col lg:flex-row gap-[20px] items-center">
                   {PopularMinecraftMods.map((value, index) => (
-                    <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
+                    <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
                       <Cards value={value} />
                     </button>
@@ -187,7 +178,7 @@ export default function Home() {
 
 
           <section id="about" className="py-16 bg-gradient-to-b  flex justify-center items-center from-gray-900 to-black w-full">
-            <div className="container w-full">
+            <div className="container w-[90%] md:w-full">
               <div className="max-w-3xl mx-auto text-center">
                 <h2 className="text-3xl bg-linear-to-l bg-clip-text text-transparent anton uppercase md:text-4xl font-bold mb-6 from-yellow-500 to-cyan-500 ">
                   About <span className="bg-linear-to-l bg-clip-text text-transparent from-red-500 to-cyan-500">Lucky Mods</span>
@@ -198,7 +189,7 @@ export default function Home() {
                   tirelessly to bring you the best modifications, ensuring they're safe, optimized, and regularly updated.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                  <div className="bg-gray-800/50 p-6 rounded-lg">
+                  <div className="bg-gray-800/50 p-6  rounded-lg">
                     <h3 className="text-xl font-bold text-yellow-400 mb-2 anton tracking-wider">Safe & Secure</h3>
                     <p className="text-gray-300 ibm-mono">All mods are thoroughly tested and verified to be malware-free</p>
                   </div>
