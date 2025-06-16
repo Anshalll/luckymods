@@ -5,6 +5,7 @@ import Cards from "@/components/site/Cards"
 import { useEffect, useState } from "react"
 import SelectedMod from "../components/site/SelectedMod"
 import Loading from "@/components/site/Loading"
+import {X} from 'lucide-react'
 
 export default function Home() {
 
@@ -27,6 +28,9 @@ export default function Home() {
     id: number | null
 
   }
+
+
+
 
   const [PopularSlitherMods, setPopularSlitherMods] = useState<Array<Mod_data>>([])
   const [PopularMinecraftMods, setPopularMinecraftMods] = useState<Array<Mod_data>>([])
@@ -91,8 +95,12 @@ export default function Home() {
             }
             if (selectedData) {
 
-              return <div className="flex flex-col gap-[20px] w-full h-full items-center justify-center ">
-                <SelectedMod vals={selectedData} setSelectedModid={setSelectedModid}/>
+              return <div className="flex flex-col  gap-[20px] w-full h-full items-center justify-center ">
+                <div className="md:w-[400px] flex-col flex w-[90%] relative md:h-[500px]">
+
+                <button onClick={() => setSelectedModid({ id: null, game: "" , type: "" })} className="absolute w-max top-[25px] right-[0px] md:right-0"><X/></button>
+                <SelectedMod  />
+                </div>
               </div>
 
             

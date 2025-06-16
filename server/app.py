@@ -25,6 +25,10 @@ def updatemod():
    
    return Controller.UpdateMod(request)
 
+@app.route("/api/getmodid" , methods=["POST"])
+def getmodid():
+   return Controller.get_mod(request)
+
 @app.route("/api/getmods" , methods=["POST"])
 def get_mods():
   
