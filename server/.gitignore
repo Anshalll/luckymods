@@ -2,3 +2,4 @@ main/
 .env
 models/__pycache__/
 database/__pycache__/
+zappa_settings.json
