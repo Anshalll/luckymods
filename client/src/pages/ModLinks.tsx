@@ -70,7 +70,7 @@ export default function ModLinks({ typegame }: { typegame: string }) {
                         {Game_mods.filter((e) => e.id === SelectedModid).map((vals, key) => {
                             return <div key={key} className="w-full relative h-full ">
                                 <button className="absolute right-0 rounded-full w-[30px] h-[30px] border border-white flex items-center justify-center" onClick={() => CloseMod()}><X /></button>
-                                <SelectedMod vals={vals} />
+                                <SelectedMod  />
                             </div>
                         })}
                     </div> : <>
