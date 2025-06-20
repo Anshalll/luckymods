@@ -3,7 +3,6 @@ import { Suspense, lazy } from 'react'
 import Loading from './components/site/Loading'
 import Mods from './pages/Mods'
 import ProtectedRoutes from './ProtectedRoutes'
-import SelectedMod from './components/site/SelectedMod'
 
 export default function App() {
 
@@ -22,7 +21,6 @@ export default function App() {
           <Route path='/mods' element={<Mods />} />
           <Route path='/game/slither' element={<ModLinks typegame={"slither"} />} />
           <Route path='/game/minecraft' element={<ModLinks typegame={"minecraft"} />} />
-          <Route path='/selectedmod/:modid' element={<SelectedMod />} />
 
           <Route path="*" element={<Page404 />} />
           <Route element={<ProtectedRoutes user={isAdmin} redirect='/lucky/auth/admin'/>}>
