@@ -67,20 +67,7 @@ def get_all_mods(requets):
          print(e)
          session.rollback()
          return jsonify(error="Internal server error!"),500
-
-def get_mod(requests):
-    try:
-        data = requests.get_json()
-        if data["id"]:
-
-            mod = session.query(Mods).filter_by(id=data["id"]).first()
-            print(mod)
-            return jsonify(data=mod), 200
-
-    except Exception as e:
-          print(e)
-          return jsonify(error="Internal server error") , 500
-
+    
 def get_popular_mods():
     try:
                 result = {}

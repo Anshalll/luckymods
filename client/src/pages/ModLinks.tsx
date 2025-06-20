@@ -20,10 +20,14 @@ export default function ModLinks({ typegame }: { typegame: string }) {
         modgametype: string,
         created_at: string,
     }
-
+interface SelectedModdata {
+  id: number | null,
+  game: string,
+  type: string
+}
     const [Game_mods, setGameMods] = useState<Array<Mod_data>>([])
     const [isLoading, setisLoading] = useState<boolean>(false)
-    const [SelectedModid, setSelectedModid] = useState<number | null>(null)
+    const [SelectedModid, setSelectedModid] = useState<SelectedModdata >({id: null, game: "", type: ""})
 
     useEffect(() => {
         if (Game_mods.length === 0) {
@@ -56,7 +60,7 @@ export default function ModLinks({ typegame }: { typegame: string }) {
     }, [Game_mods, isLoading, typegame])
 
     const CloseMod = () => {
-        setSelectedModid(null)
+        setSelectedModid({id: null, game: "", type: ""})
     }
 
     return (
@@ -66,11 +70,12 @@ export default function ModLinks({ typegame }: { typegame: string }) {
                 <Loading />
             </div> :
                 <div className="flex flex-col gap-[20px] w-full h-full items-center justify-center ">
-                    {SelectedModid ? <div>
-                        {Game_mods.filter((e) => e.id === SelectedModid).map((vals, key) => {
+                    {SelectedModid.id ? <div>
+                        {Game_mods.filter((e) => e.id === SelectedModid.id).map((vals, key) => {
+
                             return <div key={key} className="w-full relative h-full ">
                                 <button className="absolute right-0 rounded-full w-[30px] h-[30px] border border-white flex items-center justify-center" onClick={() => CloseMod()}><X /></button>
-                                <SelectedMod  />
+                                <SelectedMod setSelectedModid={setSelectedModid} vals={vals} />
                             </div>
                         })}
                     </div> : <>
@@ -78,7 +83,7 @@ export default function ModLinks({ typegame }: { typegame: string }) {
                         <div className="w-full flex text-sm items-center  justify-center gap-[20px] flex-wrap">
 
                             {Game_mods.map((value, index) => (
-                                <button onClick={() => setSelectedModid(value.id)} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
+                                <button onClick={() => setSelectedModid({id: value.id  , game: typegame , type: value.modtype})} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
 
                                     <Cards value={value} />
                                 </button>

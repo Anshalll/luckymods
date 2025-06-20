@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Cards from "@/components/site/Cards"
 import Loading from "@/components/site/Loading"
-import ModSelected from "@/components/site/SelectedMod"
+
 
 import { Pen, Trash } from 'lucide-react'
 import UpdateMod from "@/components/site/UpdateMod"
@@ -18,8 +18,6 @@ export default function Dashboard() {
         modgametype: string,
         created_at: string,
     }
-
-
 
     const [typegame, settypegame] = useState<string | null>("slither")
     const [Game_mods, setGameMods] = useState<Array<Mod_data>>([])
@@ -112,7 +110,7 @@ export default function Dashboard() {
                                             <Trash size={20} />
                                         </button>
                                     </div>
-                                    <ModSelected  />
+                               
                                 </div>
                             </div>
 
