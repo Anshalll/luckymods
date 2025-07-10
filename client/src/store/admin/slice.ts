@@ -18,7 +18,7 @@ const AdminSlice = createSlice({
     reducers: ({
         setAdminState : (action , payload) => {
             action.isAdmin = payload.payload
-            action.loading = true
+            action.loading = false
         }
     })
 

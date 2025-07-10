@@ -6,6 +6,9 @@ import ProtectedRoutes from './ProtectedRoutes'
 import Layout from './Layout'
 import {useAdmin} from './hooks/useAdmin'
 import { useGetAccessDataQuery } from './store/Api/Api'
+import { useDispatch } from 'react-redux'
+import { setAdminState } from './store/admin/slice'
+
 export default function App() {
 
   const Home = lazy(() => import('./pages/Home'))
@@ -15,17 +18,17 @@ export default function App() {
   const Dashboard = lazy(() => import('./pages/Dashboard'))
   const {isAdmin, loading} = useAdmin()
   const {data , isLoading , error} = useGetAccessDataQuery("/")
-
+  const Dispatch  = useDispatch()
 
   useEffect(() => {
     if (!isLoading && !error) {
-        console.log(data)
+       Dispatch(setAdminState(data.logged))
     }
-  } , [isLoading, data , error] )
+  } , [isLoading, data , error , Dispatch] )
 
   return (  
     <Router>
-      <Suspense fallback={<Loading />}>
+     {loading ? <Loading/> :  <Suspense fallback={<Loading />}>
         <Routes>
           <Route element={<Layout/>}>
           
@@ -51,7 +54,7 @@ export default function App() {
 
 
 
-      </Suspense>
+      </Suspense>}
     </Router>
   )
 }
