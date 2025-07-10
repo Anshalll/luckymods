@@ -7,14 +7,25 @@
             "dateutil",
             "botocore",
             "s3transfer",
-            "concurrent"
+            "concurrent",
+             "tests",
+            "__pycache__",
+            "*.pyc",
+            "*.pyo",
+            "*.pyd",
+            ".env",
+            ".venv",
+            ".git",
+            "mainenv",
+            ".gitignore"
         ],
         "profile_name": null,
         "project_name": "server",
         "runtime": "python3.12",
         "s3_bucket": "zappa-6ossqnmla",
         "environment_variables": {
-            "DATABASE_URL": "mysql+pymysql://avnadmin:AVNS_ZHtnE-fHSOpkj5J4Gjc@mysql-36384bc5-manishthemm-df40.d.aivencloud.com:27112/defaultdb"
+            "DATABASE_URL": "mysql+pymysql://avnadmin:AVNS_ZHtnE-fHSOpkj5J4Gjc@mysql-36384bc5-manishthemm-df40.d.aivencloud.com:27112/defaultdb",
+            "SESSION" : "32783627dgkgdagdagdhajd323233$$"
         }
     }
 }

@@ -1,4 +1,4 @@
-import Layout from "@/Layout"
+
 import Carousel from "@/components/site/Carousel"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Cards from "@/components/site/Cards"
@@ -34,7 +34,7 @@ export default function Home() {
   const [NewSlitherMods, setNewSlitherMods] = useState<Array<Mod_data>>([])
   const [NewMinecraftMods, setNewMinecraftMods] = useState<Array<Mod_data>>([])
   const [isLoading, setisLoading] = useState<boolean>(false)
-
+  const [lastViewedModId, setLastViewedModId] = useState<number | null>(null);
   useEffect(() => {
     if (PopularMinecraftMods.length === 0 && PopularSlitherMods.length === 0) {
       setisLoading(true)
@@ -69,12 +69,20 @@ export default function Home() {
   }, [NewSlitherMods, NewMinecraftMods, PopularMinecraftMods, PopularSlitherMods])
 
 
-
+  useEffect(() => {
+    if (SelectedModid.id === null && lastViewedModId !== null) {
+      const target = document.getElementById(`mod-${lastViewedModId}`);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [SelectedModid, lastViewedModId]);
+  
   return (
-    <Layout>
-     {isLoading ? <div className="flex items-center justify-center w-full h-full">
-        <Loading/>
-     </div> :  <>
+    <>
+      {isLoading ? <div className="flex items-center justify-center w-full h-full">
+        <Loading />
+      </div> : <>
         {SelectedModid.id !== null ? (
 
           (() => {
@@ -92,10 +100,10 @@ export default function Home() {
             if (selectedData) {
 
               return <div className="flex flex-col gap-[20px] w-full h-full items-center justify-center ">
-                <SelectedMod vals={selectedData} setSelectedModid={setSelectedModid}/>
+                <SelectedMod vals={selectedData} setSelectedModid={setSelectedModid} />
               </div>
 
-            
+
 
             }
 
@@ -125,7 +133,7 @@ export default function Home() {
 
 
                 </TabsContent>
-                <TabsContent value="Popular" className="flex gap-[20px] w-full lg:flex-row flex-col items-center">
+                <TabsContent value="Popular" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center">
                   {PopularSlitherMods.map((value, index) => (
                     <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
@@ -150,9 +158,13 @@ export default function Home() {
                   <TabsTrigger className="w-[200px]" value="New">New</TabsTrigger>
                   <TabsTrigger className="w-[200px]" value="Popular">Popular</TabsTrigger>
                 </TabsList>
-                <TabsContent value="New" className="flex w-full flex-col lg:flex-row gap-[20px] items-center">
+                <TabsContent value="New" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center">
                   {NewMinecraftMods.map((value, index) => (
-                    <button onClick={() => setSelectedModid({ type: "new", game: "minecraft", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
+                    <button id={`mod-${value.id}`} onClick={() => {
+
+                      setLastViewedModId(value.id); // store last clicked mod id
+                      setSelectedModid({ type: "new", game: "minecraft", id: value.id })
+                    }} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
                       <Cards value={value} />
                     </button>
@@ -160,7 +172,7 @@ export default function Home() {
 
 
                 </TabsContent>
-                <TabsContent value="Popular" className="flex w-full flex-col lg:flex-row gap-[20px] items-center">
+                <TabsContent value="Popular" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center">
                   {PopularMinecraftMods.map((value, index) => (
                     <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
@@ -214,6 +226,6 @@ export default function Home() {
         </div>)}
       </>}
 
-    </Layout>
+    </>
   )
 }

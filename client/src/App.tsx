@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import Loading from './components/site/Loading'
 import Mods from './pages/Mods'
 import ProtectedRoutes from './ProtectedRoutes'
-
+import Layout from './Layout'
+import {useAdmin} from './hooks/useAdmin'
+import { useGetAccessDataQuery } from './store/Api/Api'
 export default function App() {
 
   const Home = lazy(() => import('./pages/Home'))
@@ -11,27 +13,40 @@ export default function App() {
   const ModLinks = lazy(() => import('./pages/ModLinks'))
   const Page404 = lazy(() => import('./pages/Page404'))
   const Dashboard = lazy(() => import('./pages/Dashboard'))
-  const isAdmin = true
+  const {isAdmin, loading} = useAdmin()
+  const {data , isLoading , error} = useGetAccessDataQuery("/")
 
-  return (
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+        console.log(data)
+    }
+  } , [isLoading, data , error] )
+
+  return (  
     <Router>
       <Suspense fallback={<Loading />}>
         <Routes>
+          <Route element={<Layout/>}>
+          
+          
           <Route path="/" element={<Home />} />
           <Route path='/mods' element={<Mods />} />
           <Route path='/game/slither' element={<ModLinks typegame={"slither"} />} />
           <Route path='/game/minecraft' element={<ModLinks typegame={"minecraft"} />} />
+          </Route>
 
           <Route path="*" element={<Page404 />} />
           <Route element={<ProtectedRoutes user={isAdmin} redirect='/lucky/auth/admin'/>}>
             <Route path='/lucky/auth/dashboard' element={<Dashboard />} />
 
           </Route>
-        
+
           <Route element={<ProtectedRoutes user={!isAdmin} redirect='/lucky/auth/dashboard'/>}>
             <Route path='/lucky/auth/admin' element={<Admin />} />
 
           </Route>
+
         </Routes>
 
 

@@ -1,13 +1,14 @@
-import Layout from "@/Layout"
+
 import SlitherBG from "@/assets/slitherbg.jpg"
 import MinecraftBG from "@/assets/minecraftbg.jpg"
 import SelectedMod from "../components/site/SelectedMod"
 import Loading from "@/components/site/Loading"
 import Cards from "@/components/site/Cards"
-import { X } from 'lucide-react'
+
 import { useEffect, useState } from "react"
 
 export default function ModLinks({ typegame }: { typegame: string }) {
+    const [lastViewedModId, setLastViewedModId] = useState<number | null>(null);
 
     interface Mod_data {
         id: number,
@@ -20,14 +21,14 @@ export default function ModLinks({ typegame }: { typegame: string }) {
         modgametype: string,
         created_at: string,
     }
-interface SelectedModdata {
-  id: number | null,
-  game: string,
-  type: string
-}
+    interface SelectedModdata {
+        id: number | null,
+        game: string,
+        type: string
+    }
     const [Game_mods, setGameMods] = useState<Array<Mod_data>>([])
     const [isLoading, setisLoading] = useState<boolean>(false)
-    const [SelectedModid, setSelectedModid] = useState<SelectedModdata >({id: null, game: "", type: ""})
+    const [SelectedModid, setSelectedModid] = useState<SelectedModdata>({ id: null, game: "", type: "" })
 
     useEffect(() => {
         if (Game_mods.length === 0) {
@@ -59,40 +60,59 @@ interface SelectedModdata {
 
     }, [Game_mods, isLoading, typegame])
 
-    const CloseMod = () => {
-        setSelectedModid({id: null, game: "", type: ""})
-    }
+
+    useEffect(() => {
+        if (SelectedModid.id === null && lastViewedModId !== null) {
+            const target = document.getElementById(`mod-${lastViewedModId}`);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+    }, [SelectedModid, lastViewedModId]);
+
+
 
     return (
 
-        <Layout>
+        <>
             {isLoading ? <div className="w-full h-full flex items-center justify-center">
                 <Loading />
             </div> :
-                <div className="flex flex-col gap-[20px] w-full h-full items-center justify-center ">
+                <div className="flex flex-col gap-[20px] p-[20px] w-full h-full items-center  ">
                     {SelectedModid.id ? <div>
                         {Game_mods.filter((e) => e.id === SelectedModid.id).map((vals, key) => {
 
-                            return <div key={key} className="w-full relative h-full ">
-                                <button className="absolute right-0 rounded-full w-[30px] h-[30px] border border-white flex items-center justify-center" onClick={() => CloseMod()}><X /></button>
+                            return <div key={key} className="flex flex-col gap-[20px] w-full h-full items-center justify-center ">
+
                                 <SelectedMod setSelectedModid={setSelectedModid} vals={vals} />
+
                             </div>
                         })}
                     </div> : <>
-                        <img src={typegame === "minecraft" ? MinecraftBG : SlitherBG} className="rounded-lg w-full h-[300px] object-cover" alt="" />
-                        <div className="w-full flex text-sm items-center  justify-center gap-[20px] flex-wrap">
+                        <img src={typegame === "minecraft" ? MinecraftBG : SlitherBG} className="rounded-lg w-full h-[200px] object-cover" alt="" />
+                        <div  className="w-full flex text-sm items-center  justify-center gap-[20px] flex-wrap">
+                           
 
                             {Game_mods.map((value, index) => (
-                                <button onClick={() => setSelectedModid({id: value.id  , game: typegame , type: value.modtype})} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
+                                
+                                <button id={`mod-${value.id}`} onClick={() => {
+                                   
+                                    setLastViewedModId(value.id); // store last clicked mod id
+                                    setSelectedModid({ id: value.id, game: typegame, type: value.modtype })
+                                }
+
+                                } key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-full lg:w-[350px] ">
 
                                     <Cards value={value} />
                                 </button>
                             ))}
+                            </div>
 
-                        </div>
+
+                     
                     </>}
                 </div>}
 
-        </Layout>
+        </>
     )
 }

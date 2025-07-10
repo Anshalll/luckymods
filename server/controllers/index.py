@@ -1,7 +1,9 @@
 from flask import jsonify
-from models.models import Mods
+from models.models import Mods , Admin
 from models.models import dbInstance
 session = dbInstance.DbSession()
+import bcrypt
+from flask import session as flasksession
 
 
 
@@ -24,7 +26,7 @@ def UpdateMod(request):
 
       return jsonify(message="Mod updated"), 200
     except Exception as e:
-          print(e)
+          
           session.rollback()
           return jsonify(error="Internal server error!") , 500
     
@@ -64,7 +66,7 @@ def get_all_mods(requets):
             return jsonify(data=result), 200
         
     except Exception as e:
-         print(e)
+     
          session.rollback()
          return jsonify(error="Internal server error!"),500
     
@@ -97,7 +99,7 @@ def get_popular_mods():
 
                 return jsonify(data=result), 200
     except Exception as e:
-                print(e)
+               
                 session.rollback()
                 return jsonify(error="Internal server error!"), 500
 
@@ -172,3 +174,16 @@ def loginuser(request):
       if data:
             user_email = data["useremail"]
             password = data["password"]
+
+            if user_email and password and user_email.strip() != "" and password.strip() != "":
+                userval = session.query(Admin).all()
+                for udata in userval:
+                    if udata.username != user_email:
+                           
+                            return jsonify(error="Invalid credentials!" , logged=False) , 403
+                    if not bcrypt.checkpw(password.encode("utf-8"), udata.password.encode("utf-8")):
+                            
+                             return jsonify(error="Invalid credentials!" , logged=False) , 403
+                    flasksession["username"] = udata.username
+
+                return jsonify(logged = True) , 200 

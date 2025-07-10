@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
 import Navbar from './components/site/Navbar';
+import { Outlet } from 'react-router-dom';
 
-
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout() {
     return (
         <div className=' h-screen flex justify-center   w-full'>
             <div className='scroller h-full  w-[1800px] overflow-y-auto flex flex-col'>
@@ -13,7 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 </header>
                 <main className='flex-grow'>
 
-                    {children}
+                   <Outlet/>
                 </main>
 
         

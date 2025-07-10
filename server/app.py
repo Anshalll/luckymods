@@ -4,21 +4,22 @@ import os
 from database.connection import dbInstance 
 import controllers.index as Controller
 from flask_cors import CORS
-
+from flask import session
 
 
 app = Flask(__name__)
 load_dotenv()
-CORS(app, origins=["*"] )
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_pre_ping': True
-}
+
+CORS(app , supports_credentials=True,   origins=["https://luckymods.netlify.app"])
 
 dbInstance.check_connection()
+app.secret_key = os.getenv("SESSION")
 
 @app.route('/')
 def home():
-    return "Hello from Lambda!"
+   if 'username' not in session:
+      return jsonify(logged=False)
+   return jsonify(logged=True)
 
 @app.route("/api/updatemod" , methods=["POST"])
 def updatemod():
@@ -35,7 +36,6 @@ def InsertMods():
 
    return Controller.InsertMods(request)
 
-session = dbInstance.DbSession()  
 
 @app.route("/api/get_popular_mods" , methods=["GET"])
 def get_popularmods():
@@ -49,7 +49,7 @@ def get_newmods():
 def login():
 
    if "username" not in session:
-      return jsonify(logged=False) , 500
+      return Controller.loginuser(request)
    else:
       pass
 
