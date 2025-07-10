@@ -22,6 +22,7 @@ export default function App() {
 
   useEffect(() => {
     if (!isLoading && !error) {
+      console.log("API URL:", import.meta.env.REACT_APP_API_URL);
        Dispatch(setAdminState(data.logged))
     }
   } , [isLoading, data , error , Dispatch] )
