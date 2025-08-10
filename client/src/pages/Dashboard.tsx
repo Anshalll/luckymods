@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react"
 import Cards from "@/components/site/Cards"
 import Loading from "@/components/site/Loading"
-
-
 import { Pen, Trash } from 'lucide-react'
 import UpdateMod from "@/components/site/UpdateMod"
+import Createmod from "@/components/site/Createmod"
 
 export default function Dashboard() {
 
@@ -24,6 +23,8 @@ export default function Dashboard() {
     const [isLoading, setisLoading] = useState<boolean>(false)
     const [SelectedMod, setSelectedMod] = useState<Mod_data | null>(null)
     const [UpdateState, setUpdateState] = useState<boolean>(false)
+    const [UploadState, setUploadState] = useState<boolean>(false)
+    const [ListMods, setListMods] = useState<boolean>(true)
 
     useEffect(() => {
         if (Game_mods.length === 0) {
@@ -65,37 +66,50 @@ export default function Dashboard() {
         }
     }
 
+
+    const HandleDisplay = () => {
+        setUploadState(true)
+        setListMods(false)
+    }
+
     return (
-        <div className="flex w-full text-[12px] h-[100vh] text-white p-[20px]">
+        <div className="flex w-full flex-col text-[12px] p-[10px] h-[100vh] text-white lg:p-[20px]">
             {isLoading ?
                 <div className="w-full h-full flex items-center justify-center">
                     <Loading />
                 </div>
                 :
                 <>
-                    <div className="w-[30%] flex flex-col  gap-[10px] h-full ">
-                        <div className="flex w-full items-center gap-[20px]">
-                            <button className="bg-gray-500 p-[3px] rounded-lg px-[20px]" onClick={() => HandleSelectGame("slither")}>Slither</button>
-                            <button className="bg-gray-500 p-[3px] rounded-lg px-[20px]" onClick={() => HandleSelectGame("minecraft")}>Minecraft</button>
 
-                        </div>
+                    <div className="flex h-[40px] w-full items-center gap-[20px]">
+                        <button className="bg-gray-500 p-[3px] rounded-lg px-[20px]" onClick={() => HandleSelectGame("slither")}>Slither</button>
+                        <button className="bg-gray-500 p-[3px] rounded-lg px-[20px]" onClick={() => HandleSelectGame("minecraft")}>Minecraft</button>
+                        <button className="bg-red-500 rounded-lg w-[100px] " onClick={() => HandleDisplay()}>Upload mod</button>
+
+                    </div>
+
+                    {!UploadState && ListMods && <div className="lg:w-[30%] w-full flex flex-col  gap-[10px] h-full ">
+
                         <div className="flex w-full h-full items-center flex-col overflow-y-auto">
 
                             {Game_mods.map((vals, index) => {
-                                return <button onClick={() => setSelectedMod(vals)} key={index}>
+                                return <button onClick={() => {
+                                    setSelectedMod(vals)
+
+                                }} key={index}>
                                     <div className="w-[300px]">
                                         <Cards value={vals} />
                                     </div>
                                 </button>
                             })}
                         </div>
-                    </div>
+                    </div>}
 
-                    <div className="w-[70%] h-full">
+                    <div className="lg:w-[70%] w-full h-full">
                         {SelectedMod !== null ? (UpdateState ?
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod}/>
+                                <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod} />
 
                             </div>
                             :
@@ -110,11 +124,12 @@ export default function Dashboard() {
                                             <Trash size={20} />
                                         </button>
                                     </div>
-                               
+
                                 </div>
                             </div>
 
-                        ) : ""}
+                        ) : <Createmod setListMods={setListMods} UploadState={UploadState} setUploadState={setUploadState} />
+                        }
                     </div>
                 </>
 

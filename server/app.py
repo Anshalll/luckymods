@@ -14,7 +14,10 @@ CORS(app , supports_credentials=True,   origins=["https://luckymods.netlify.app"
 
 dbInstance.check_connection()
 app.secret_key = os.getenv("SESSION")
-
+app.config.update(
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True  
+)
 @app.route('/')
 def home():
    if 'username' not in session:
@@ -45,17 +48,18 @@ def get_popularmods():
 @app.route("/api/get_new_mods" , methods=["GET"])
 def get_newmods():
    return Controller.get_newly_added_mods()
+
 @app.route("/api/login" , methods=["POST"])
 def login():
-
-   if "username" not in session:
+  
+  
       return Controller.loginuser(request)
-   else:
-      pass
 
+
+ 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbInstance.DbSession().remove()  # removes the current session for this request
 if __name__ == "__main__":
 
-   app.run()
+   app.run(debug=True)

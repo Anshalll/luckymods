@@ -11,12 +11,14 @@ interface Mod_data {
     rating: number,
     modgametype: string,
     created_at: string,
-
+    
 }
 
 
 export default function UpdateMod({setSelectedMod ,  setGameMods ,  SelectedData, setUpdateState }: { setUpdateState: React.Dispatch<boolean>, SelectedData: Mod_data  , setGameMods: React.Dispatch<Array<Mod_data> > ,  setSelectedMod: React.Dispatch<Mod_data>}) {
 
+
+    
     const [Name, setName] = useState<string>(SelectedData.modname)
     const [URL, setURL] = useState<string>(SelectedData.modurl)
     const [Desc, setDesc] = useState<string>(SelectedData.moddesc)
@@ -64,7 +66,7 @@ export default function UpdateMod({setSelectedMod ,  setGameMods ,  SelectedData
 
                 <label className='w-[400px] ibm-mono text-cyan-500' htmlFor="imageurl">Image URL</label>
                 <input onChange={(e) => setImage(e.target.value)} id='imageurl' className="w-[400px] ibm-mono p-[5px]" value={Image} />
-
+        
                 <label htmlFor="modname" className='w-[400px] ibm-mono text-cyan-500'>Game</label>
 
                 <select onChange={(e) => setGame(e.target.value)} name="game" id="game" className='w-[400px]' value={Game}>

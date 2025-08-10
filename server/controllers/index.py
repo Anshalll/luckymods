@@ -64,7 +64,7 @@ def get_all_mods(requets):
         elif game_type and game_type == "minecraft":
             result = getRecords("Minecraft")
             return jsonify(data=result), 200
-        
+
     except Exception as e:
      
          session.rollback()
@@ -138,16 +138,23 @@ def get_newly_added_mods():
 
 def InsertMods(request):
     try: 
-            
+            body = request.get_json()
+            for i in body: 
 
+                if (body[i] is None or  body[i].strip() == "")  :
+                    
+                    return jsonify(error= f"{i} is a required field"), 400
+                  
+            
             data = [
                   {
-                    "modname": "Minecraft Mod",
-                    "modurl": "https://www.mediafire.com/minecraft_mod",
-                    "modimage": "https://cms-assets.xboxservices.com/assets/22/3a/223a1521-60cf-4a82-b708-c5f2fdfcf163.jpg?n=Minecraft-Vanilla_Sneaky-Slider-1084_Spring-to-Life_1600x675.jpg",
-                    "moddesc": "Enhance Minecraft with Mod",
-                    "rating": 4,
-                    "modgametype": "Minecraft",
+                    "modname":  body["name"],
+                    "modurl": body["url"],
+                    "modimage": body["image"],
+                    "moddesc": body["desc"],
+
+                    "rating": 0,
+                    "modgametype": body["game"],
                     "created_at": None
                 }
             ]
@@ -164,26 +171,45 @@ def InsertMods(request):
                 ))
             session.commit()
             session.close()
+     
             return jsonify(message="Data inserted!") ,200
     except Exception as e:
         print(e)
         return jsonify(error="Internal server error!"),500
 
 def loginuser(request):
-      data = request.get_json()
-      if data:
-            user_email = data["useremail"]
-            password = data["password"]
+    try:
+        
+        if "username" not in flasksession:
+            data = request.get_json()
 
-            if user_email and password and user_email.strip() != "" and password.strip() != "":
-                userval = session.query(Admin).all()
-                for udata in userval:
-                    if udata.username != user_email:
-                           
-                            return jsonify(error="Invalid credentials!" , logged=False) , 403
-                    if not bcrypt.checkpw(password.encode("utf-8"), udata.password.encode("utf-8")):
-                            
-                             return jsonify(error="Invalid credentials!" , logged=False) , 403
-                    flasksession["username"] = udata.username
+            if not data:
+                return jsonify(error="No data provided", logged=False), 400
 
-                return jsonify(logged = True) , 200 
+            user_email = data.get("id", "").strip()
+            password = data.get("password", "").strip()
+
+            if not user_email or not password:
+                return jsonify(error="user id and password required", logged=False), 400
+
+            
+            userval = session.query(Admin).all()
+
+            for udata in userval:
+                if udata.username == user_email:
+                    
+                    if bcrypt.checkpw(password.encode("utf-8"), udata.password.encode("utf-8")):
+                        flasksession["username"] = udata.username
+                     
+                        return jsonify(logged=True), 200
+                    else:
+                        return jsonify(error="Invalid credentials!", logged=False), 403
+
+        
+            return jsonify(error="Invalid credentials!", logged=False), 403
+        else:
+             
+             return jsonify(logged = True) , 200
+    except Exception as e:
+        print(str(e))
+        return jsonify(error=str(e)), 500
