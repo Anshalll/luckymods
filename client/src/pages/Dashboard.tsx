@@ -73,7 +73,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="flex w-full flex-col text-[12px] p-[10px] h-[100vh] text-white lg:p-[20px]">
+        <div className="flex w-full  flex-col text-[12px] p-[10px] h-[100vh] text-white lg:p-[20px]">
             {isLoading ?
                 <div className="w-full h-full flex items-center justify-center">
                     <Loading />
@@ -84,29 +84,32 @@ export default function Dashboard() {
                     <div className="flex h-[40px] w-full items-center gap-[20px]">
                         <button className="bg-gray-500 p-[3px] rounded-lg px-[20px]" onClick={() => HandleSelectGame("slither")}>Slither</button>
                         <button className="bg-gray-500 p-[3px] rounded-lg px-[20px]" onClick={() => HandleSelectGame("minecraft")}>Minecraft</button>
-                        <button className="bg-red-500 rounded-lg w-[100px] " onClick={() => HandleDisplay()}>Upload mod</button>
+                        <button className="bg-red-500 lg:hidden rounded-lg w-[100px] " onClick={() => HandleDisplay()}>Upload mod</button>
 
                     </div>
 
-                    {!UploadState && ListMods && <div className="lg:w-[30%] w-full flex flex-col  gap-[10px] h-full ">
+                    <div className="flex h-[calc(100%-40px)]">
 
-                        <div className="flex w-full h-full items-center flex-col overflow-y-auto">
 
-                            {Game_mods.map((vals, index) => {
-                                return <button onClick={() => {
-                                    setSelectedMod(vals)
+                        {!UploadState && ListMods && <div className="lg:w-[30%] w-full flex flex-col  gap-[10px] h-full ">
 
-                                }} key={index}>
-                                    <div className="w-[300px]">
-                                        <Cards value={vals} />
-                                    </div>
-                                </button>
-                            })}
-                        </div>
-                    </div>}
+                            <div className="flex w-full h-full items-center flex-col overflow-y-auto">
 
-                    <div className="lg:w-[70%] w-full h-full">
-                        {SelectedMod !== null ? (UpdateState ?
+                                {Game_mods.map((vals, index) => {
+                                    return <button onClick={() => {
+                                        setSelectedMod(vals)
+
+                                    }} key={index}>
+                                        <div className="w-[300px]">
+                                            <Cards value={vals} />
+                                        </div>
+                                    </button>
+                                })}
+                            </div>
+                        </div>}
+
+                        {SelectedMod !== null ? <div className="lg:w-[70%] w-full h-full">
+                           { UpdateState ?
 
                             <div className="w-full h-full flex items-center justify-center">
                                 <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod} />
@@ -126,11 +129,14 @@ export default function Dashboard() {
                                     </div>
 
                                 </div>
-                            </div>
+                            </div>}
 
-                        ) : <Createmod setListMods={setListMods} UploadState={UploadState} setUploadState={setUploadState} />
+                            
+
+                        </div> : <Createmod setListMods={setListMods} UploadState={UploadState} setUploadState={setUploadState} />
                         }
                     </div>
+
                 </>
 
             }
