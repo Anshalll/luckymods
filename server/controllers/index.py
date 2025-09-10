@@ -213,3 +213,24 @@ def loginuser(request):
     except Exception as e:
         print(str(e))
         return jsonify(error=str(e)), 500
+
+
+def deleteMod(request):
+     try:
+        data = request.get_json()
+        if not data["id"]: 
+             return jsonify(error="Id is required!"),400
+        else:
+            rows_deleted = session.query(Mods).filter(Mods.id == data["id"]).delete()
+            session.commit()
+
+            if rows_deleted == 0:
+                return jsonify(error="No record found with given id"), 404
+
+        return jsonify(data="Mod deleted successfully"), 200
+
+
+     except Exception as e:
+          print(e)
+          return jsonify(error="Internal server error!") , 500
+     

@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react"
-import Cards from "@/components/site/Cards"
 import Loading from "@/components/site/Loading"
-import { Pen, Trash } from 'lucide-react'
 import UpdateMod from "@/components/site/UpdateMod"
 import Createmod from "@/components/site/Createmod"
+import AdminCards from "@/components/site/AdminCards"
+import ConfirmDelete from "@/components/site/ConfirmDelete"
 
 export default function Dashboard() {
 
     interface Mod_data {
-        id: number,
+        id?: number,
         modname: string,
         modurl: string,
         modimage: string,
         moddesc: string,
-        rating: number,
+        rating?: number,
         modgametype: string,
-        created_at: string,
+        created_at?: string,
     }
 
     const [typegame, settypegame] = useState<string | null>("slither")
@@ -25,6 +25,8 @@ export default function Dashboard() {
     const [UpdateState, setUpdateState] = useState<boolean>(false)
     const [UploadState, setUploadState] = useState<boolean>(false)
     const [ListMods, setListMods] = useState<boolean>(true)
+    const [DeleteState, setDeleteState] = useState<boolean>(false)
+    const [Deleteid,  setDeleteid] = useState<number | null>(null)
 
     useEffect(() => {
         if (Game_mods.length === 0) {
@@ -56,9 +58,6 @@ export default function Dashboard() {
 
     }, [Game_mods, isLoading, typegame])
 
-
-
-
     const HandleSelectGame = (game: string) => {
         if (game.trim() !== "" && game !== typegame) {
             settypegame(game)
@@ -71,6 +70,8 @@ export default function Dashboard() {
         setUploadState(true)
         setListMods(false)
     }
+
+
 
     return (
         <div className="flex w-full  flex-col text-[12px] p-[10px] h-[100vh] text-white lg:p-[20px]">
@@ -88,52 +89,40 @@ export default function Dashboard() {
 
                     </div>
 
-                    <div className="flex h-[calc(100%-40px)]">
+                    <div className="relative w-full flex items-center justify-center h-[calc(100%-40px)]">
 
+                        {UpdateState && <div className="absolute z-1 h-[100%] flex items-centrer justify-center  w-[100%] bg-black">
+                            <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod} />
+                        </div>}
 
-                        {!UploadState && ListMods && <div className="lg:w-[30%] w-full flex flex-col  gap-[10px] h-full ">
+                        {DeleteState && <ConfirmDelete setDeleteid={setDeleteid} setDeleteState={setDeleteState}  id={Deleteid}/> }
 
-                            <div className="flex w-full h-full items-center flex-col overflow-y-auto">
+                        {!UploadState && ListMods && <div className="lg:w-[40%]  w-full flex flex-col  gap-[10px] h-full ">
+
+                            <div className="Scroller flex w-full h-full items-center flex-col overflow-y-auto">
 
                                 {Game_mods.map((vals, index) => {
-                                    return <button onClick={() => {
-                                        setSelectedMod(vals)
-
-                                    }} key={index}>
+                                    return <div key={index}>
                                         <div className="w-[300px]">
-                                            <Cards value={vals} />
+                                            <AdminCards setDeleteid={setDeleteid}  setDeleteState={setDeleteState} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod} value={vals} />
                                         </div>
-                                    </button>
+                                    </div>
                                 })}
                             </div>
                         </div>}
 
-                        {SelectedMod !== null ? <div className="lg:w-[70%] w-full h-full">
-                           { UpdateState ?
+                        {SelectedMod !== null ? <div className="hidden lg:w-[70%] w-full h-full">
+                            {UpdateState &&
 
-                            <div className="w-full h-full flex items-center justify-center">
-                                <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod} />
-
-                            </div>
-                            :
-                            <div className="w-full h-full flex items-center justify-center">
-                                <div className="w-[500px] h-max">
-                                    <div className="flex gap-[20px] items-center">
-
-                                        <button onClick={() => setUpdateState(true)} title="Update" className="cursor-pointer">
-                                            <Pen size={20} />
-                                        </button>
-                                        <button title="delete" className="bg-[crimson] cursor-pointer w-[30px] h-[30px] rounded-full flex items-center justify-center">
-                                            <Trash size={20} />
-                                        </button>
-                                    </div>
+                                <div className="w-full h-full hidden  lg:flex items-center justify-center">
+                                    <UpdateMod setGameMods={setGameMods} SelectedData={SelectedMod} setUpdateState={setUpdateState} setSelectedMod={setSelectedMod} />
 
                                 </div>
-                            </div>}
+                               }
 
-                            
 
-                        </div> : <Createmod setListMods={setListMods} UploadState={UploadState} setUploadState={setUploadState} />
+
+                        </div> : <Createmod  setListMods={setListMods} UploadState={UploadState} setUploadState={setUploadState} />
                         }
                     </div>
 

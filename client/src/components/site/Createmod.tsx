@@ -28,15 +28,9 @@ export default function Createmod({ UploadState, setUploadState, setListMods }: 
         const response = await Data_send({ path: "/api/uploadmod", method: "POST", data: { image: Image, name: Name, game: Game, url: URL, desc: Desc } })
 
         if ('data' in response && response.data) {
-            alert("Mod uploaded")
-            setImage("")
-            setName("")
-            setGame("Slither.io")
-            setDesc("")
-            setURL("")
+            window.location.reload();
         }
 
-        // If there is an error, handle it
         if ('error' in response && isFetchBaseQueryError(response.error)) {
             if (
                 response.error.data &&

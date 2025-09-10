@@ -10,7 +10,7 @@ from flask import session
 app = Flask(__name__)
 load_dotenv()
 
-CORS(app , supports_credentials=True,   origins=["https://luckymods.netlify.app"])
+CORS(app , supports_credentials=True,   origins=["*"])
 
 dbInstance.check_connection()
 app.secret_key = os.getenv("SESSION")
@@ -24,7 +24,7 @@ def home():
       return jsonify(logged=False)
    return jsonify(logged=True)
 
-@app.route("/api/updatemod" , methods=["POST"])
+@app.route("/api/updatemod" , methods=["PATCH"])
 def updatemod():
    
    return Controller.UpdateMod(request)
@@ -55,11 +55,13 @@ def login():
   
       return Controller.loginuser(request)
 
-
+@app.route("/api/deletemod" , methods=["DELETE"])
+def deletemod():
+   return Controller.deleteMod(request)
  
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    dbInstance.DbSession().remove()  # removes the current session for this request
+    dbInstance.DbSession().remove()  
 if __name__ == "__main__":
 
    app.run(debug=True)
