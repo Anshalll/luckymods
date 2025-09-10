@@ -52,7 +52,7 @@ export default function Admin() {
   return (
     <div className="text-white w-full h-[100vh] flex  items-center justify-center gap-[20px]">
 
-      <div className="flex flex-col gap-[20px] w-[500px] h-[250px] bg-black p-[20px] rounded-lg">
+      <div className="flex flex-col gap-[20px] w-[90%] lg:w-[500px] h-[250px] bg-black p-[20px] rounded-lg">
         <p>Login to admin panel</p>
         {Error && <p className='text-white bg-[crimson] h-[40px] px-[20px] w-[100%] rounded-lg'>{Error}</p> }
         <Input onChange={(e) => setid(e.target.value)} value={id} required type="text" placeholder="Your id" />

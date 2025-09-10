@@ -77,7 +77,7 @@ export default function Home() {
       }
     }
   }, [SelectedModid, lastViewedModId]);
-  
+
   return (
     <>
       {isLoading ? <div className="flex items-center justify-center w-full h-full">
@@ -117,11 +117,11 @@ export default function Home() {
 
           <div className='w-full  flex-col gap-[40px] items-center justify-center flex '>
             <h1 className="uppercase anton bg-gradient-to-r bg-clip-text text-transparent from-cyan-500 to-yellow-500 tracking-wider text-3xl">Slither.io mods</h1>
-            <div className="flex  text-white space-x-4 text-sm w-full items-center">
+            <div className="flex  text-white space-x-4 text-sm w-[90%] lg:w-full items-center">
               <Tabs defaultValue="New" className="w-full  flex flex-col gap-[20px] items-center justify-center">
                 <TabsList className="bg-black ">
-                  <TabsTrigger className="w-[200px]" value="New">New</TabsTrigger>
-                  <TabsTrigger className="w-[200px]" value="Popular">Popular</TabsTrigger>
+                  <TabsTrigger className="w-[150px] lg:w-[200px]" value="New">New</TabsTrigger>
+                  <TabsTrigger className="w-[150px] lg:w-[200px]" value="Popular">Popular</TabsTrigger>
                 </TabsList>
                 <TabsContent value="New" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center ">
                   {NewSlitherMods?.map((value, index) => (
@@ -152,19 +152,19 @@ export default function Home() {
 
           <div className='w-full  flex-col gap-[40px] items-center justify-center flex '>
             <h1 className="uppercase anton bg-gradient-to-r bg-clip-text text-transparent from-cyan-500 to-yellow-500 tracking-wider text-3xl">minecrft mods</h1>
-            <div className="flex  text-white items-center space-x-4 text-sm">
+            <div className="flex  text-white space-x-4 text-sm w-[90%] lg:w-full items-center">
               <Tabs defaultValue="New" className="w-full  flex flex-col gap-[20px] items-center justify-center">
                 <TabsList className="bg-black ">
-                  <TabsTrigger className="w-[200px]" value="New">New</TabsTrigger>
-                  <TabsTrigger className="w-[200px]" value="Popular">Popular</TabsTrigger>
+                  <TabsTrigger className="w-[150px] lg:w-[200px]" value="New">New</TabsTrigger>
+                  <TabsTrigger className="w-[150px] lg:w-[200px]" value="Popular">Popular</TabsTrigger>
                 </TabsList>
-                <TabsContent value="New" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center">
-                  {NewMinecraftMods.map((value, index) => (
-                    <button id={`mod-${value.id}`} onClick={() => {
+                <TabsContent value="New" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center ">
+                  {NewMinecraftMods?.map((value, index) => (
+                    <button onClick={() => {
 
-                      setLastViewedModId(value.id); // store last clicked mod id
+                      setLastViewedModId(value.id);
                       setSelectedModid({ type: "new", game: "minecraft", id: value.id })
-                    }} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
+                    }}  key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] md:w-[350px] ">
 
                       <Cards value={value} />
                     </button>
@@ -174,7 +174,7 @@ export default function Home() {
                 </TabsContent>
                 <TabsContent value="Popular" className="flex gap-[20px] md:flex-row flex-col items-center w-full justify-center">
                   {PopularMinecraftMods.map((value, index) => (
-                    <button onClick={() => setSelectedModid({ type: "popular", game: "slither", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
+                    <button onClick={() => setSelectedModid({ type: "popular", game: "minecraft", id: value.id })} key={index} className="bg-gradient-to-r hover:from-yellow-500 hover:to-pink-500 rounded-xl p-1 from-green-500 to-cyan-500 w-[90%] lg:w-[350px] ">
 
                       <Cards value={value} />
                     </button>

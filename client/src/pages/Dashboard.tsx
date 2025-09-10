@@ -99,7 +99,7 @@ export default function Dashboard() {
 
                         {!UploadState && ListMods && <div className="lg:w-[40%]  w-full flex flex-col  gap-[10px] h-full ">
 
-                            <div className="Scroller flex w-full h-full items-center flex-col overflow-y-auto">
+                            <div className="Scroller flex w-full h-full items-center gap-[10px] flex-col overflow-y-auto">
 
                                 {Game_mods.map((vals, index) => {
                                     return <div key={index}>
